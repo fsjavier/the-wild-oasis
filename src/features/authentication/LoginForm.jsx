@@ -26,13 +26,26 @@ function LoginForm() {
     );
   }
 
+  function handleGuestLogin() {
+    setEmail("test@test.com");
+    setPassword("testpassword");
+    login(
+      { email: "test@test.com", password: "testpassword" },
+      {
+        onSettled: () => {
+          setEmail("");
+          setPassword("");
+        },
+      }
+    );
+  }
+
   return (
     <Form onSubmit={handleSubmit}>
       <FormRowVertical label="Email address">
         <Input
           type="email"
           id="email"
-          // This makes this form better for password managers
           autoComplete="username"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -52,6 +65,11 @@ function LoginForm() {
       <FormRowVertical>
         <Button size="large" disabled={isLoggingIn}>
           {!isLoggingIn ? "Login" : <SpinnerMini />}
+        </Button>
+      </FormRowVertical>
+      <FormRowVertical>
+        <Button size="large" onClick={handleGuestLogin} disabled={isLoggingIn}>
+          {!isLoggingIn ? "Login as Guest" : <SpinnerMini />}
         </Button>
       </FormRowVertical>
     </Form>
